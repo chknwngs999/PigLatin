@@ -1,10 +1,31 @@
 public void setup() 
 {
-  String[] lines = loadStrings("words.txt");
+  String[] lines = loadStrings("LowellHymn.txt");
   System.out.println("there are " + lines.length + " lines");
-  for (int i = 0; i < lines.length; i++) 
-  {
-    System.out.println(pigLatin(lines[i]));
+  /*
+        part 1
+   for (int i = 0 ; i < lines.length; i++) {
+   System.out.println(pigLatin(lines[i]));
+   }*/
+  for (int i = 0; i < lines.length; i++) {
+    String printline = "";
+    lines[i] = lines[i].trim();
+    char lastchr = lines[i].charAt(lines[i].length()-1);
+
+    if (!(Character.isLetter(lastchr))) {
+      lines[i] = lines[i].substring(0, lines[i].length()-1);
+    }
+
+    String[] words = lines[i].split(" ");
+    for (int j = 0; j < words.length; j++) {
+      printline = printline + pigLatin(words[j]) + " ";
+    }
+
+    printline = printline.trim();
+    if (!(Character.isAlphabetic(lastchr))) {
+      printline = printline + lastchr;
+    }
+    System.out.println(printline);
   }
 }
 
@@ -30,6 +51,8 @@ public String pigLatin(String sWord)
 {
   String result = "";
   int vowelindex = findFirstVowel(sWord.toLowerCase());
+  boolean isupper = Character.isUpperCase(sWord.charAt(0));
+
   if (vowelindex == -1) {
     result = sWord + "ay";
   } else if (vowelindex == 0) {
@@ -39,5 +62,7 @@ public String pigLatin(String sWord)
   } else {
     result = sWord.substring(vowelindex) + sWord.substring(0, vowelindex).toLowerCase() + "ay";
   }
+  if (isupper)
+    result = result.substring(0, 1).toUpperCase() + result.substring(1);
   return result;
 }
